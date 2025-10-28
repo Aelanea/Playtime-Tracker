@@ -1,4 +1,5 @@
 Playtime Tracker for Foundry VTT
+
 This module keeps track of how much real time players and GM has spent in the world.
 
 Tracks time automatically from login to logout, saving it even if the server hiccups.
