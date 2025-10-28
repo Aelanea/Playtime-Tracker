@@ -4,12 +4,12 @@
     "description": "<p>Tracks total connected time for each player and GM in the world.</p>",
     "license": "MIT",
     "authors": [
-        {
-            "name": "Aelanea",
+    {
+      "name": "Aelanea",
       "url": "https://github.com/Aelanea",
       "flags": {}
-        }
-    ],
+    }
+  ],
     "scripts": [
     "scripts/playtime-tracker.js"
     ],
