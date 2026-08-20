@@ -1,4 +1,42 @@
 {
   "PLAYTIME-TRACKER.name": "Playtime Tracker",
-  "PLAYTIME-TRACKER.description": "Tracks total connected time for each player and GM."
+  "PLAYTIME-TRACKER.description": "Tracks the total connected playtime of every user in the world.",
+
+  "PLAYTIME-TRACKER.title": "Chronicle of Time",
+  "PLAYTIME-TRACKER.eyebrow": "Campaign Chronicle",
+  "PLAYTIME-TRACKER.subtitle": "A record of time spent within this world.",
+
+  "PLAYTIME-TRACKER.players": "Players",
+  "PLAYTIME-TRACKER.active": "Active Now",
+  "PLAYTIME-TRACKER.total": "Total Time",
+
+  "PLAYTIME-TRACKER.currentLeader": "Current Leader",
+  "PLAYTIME-TRACKER.leaderboard": "Time Rankings",
+  "PLAYTIME-TRACKER.time": "Time",
+
+  "PLAYTIME-TRACKER.user": "User",
+  "PLAYTIME-TRACKER.playtime": "Playtime",
+
+  "PLAYTIME-TRACKER.online": "Online",
+  "PLAYTIME-TRACKER.offline": "Offline",
+
+  "PLAYTIME-TRACKER.empty": "No users found.",
+
+  "PLAYTIME-TRACKER.refresh": "Refresh",
+  "PLAYTIME-TRACKER.reset": "Reset",
+  "PLAYTIME-TRACKER.close": "Close",
+
+  "PLAYTIME-TRACKER.resetTitle": "Reset Playtime",
+  "PLAYTIME-TRACKER.resetQuestion": "Reset all recorded playtime?",
+  "PLAYTIME-TRACKER.resetWarning": "This will permanently reset every user's accumulated playtime to zero. Players currently online will begin counting again from the moment of the reset.",
+
+  "PLAYTIME-TRACKER.confirmReset": "Confirm Reset",
+  "PLAYTIME-TRACKER.cancel": "Cancel",
+
+  "PLAYTIME-TRACKER.resetComplete": "All playtime has been reset.",
+  "PLAYTIME-TRACKER.resetGMOnly": "Only a GM can reset playtime.",
+  "PLAYTIME-TRACKER.resetPrimaryGMOnly": "Only the active GM can reset playtime.",
+
+  "PLAYTIME-TRACKER.error.dialog": "Unable to open the Playtime Tracker.",
+  "PLAYTIME-TRACKER.error.save": "Unable to save playtime data."
 }
