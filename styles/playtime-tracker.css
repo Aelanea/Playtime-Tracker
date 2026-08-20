@@ -1,0 +1,989 @@
+/* ==========================================================================
+   PLAYTIME TRACKER
+   Foundry VTT 14.367
+   ========================================================================== */
+
+.playtime-tracker-window {
+  --pt-bg: #100d15;
+  --pt-bg-2: #17121d;
+  --pt-surface: #1d1725;
+  --pt-surface-2: #251d2e;
+
+  --pt-purple: #bd72e8;
+  --pt-purple-light: #e4b2ff;
+  --pt-purple-dark: #70418d;
+
+  --pt-gold: #e5b96b;
+  --pt-silver: #b9bdc7;
+  --pt-bronze: #c28c61;
+
+  --pt-text: #f3edf7;
+  --pt-muted: #9f93a8;
+
+  --pt-border: rgba(255, 255, 255, 0.07);
+
+  background: var(--pt-bg);
+
+  border:
+    1px solid
+    rgba(189, 114, 232, 0.22);
+
+  border-radius: 18px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 70px
+      rgba(0, 0, 0, 0.65),
+    0 0 50px
+      rgba(189, 114, 232, 0.07);
+}
+
+/* ==========================================================================
+   WINDOW HEADER
+   ========================================================================== */
+
+.playtime-tracker-window
+.window-header {
+  background:
+    linear-gradient(
+      90deg,
+      #17101d,
+      #21152a,
+      #17101d
+    );
+
+  border-bottom:
+    1px solid
+    var(--pt-border);
+
+  min-height: 44px;
+}
+
+.playtime-tracker-window
+.window-title {
+  color: var(--pt-text);
+
+  font-weight: 600;
+
+  letter-spacing: 0.04em;
+}
+
+.playtime-tracker-window
+.header-control {
+  color: var(--pt-muted);
+}
+
+.playtime-tracker-window
+.header-control:hover {
+  color: var(--pt-purple-light);
+}
+
+/* ==========================================================================
+   CONTENT
+   ========================================================================== */
+
+.playtime-tracker-window
+.window-content {
+  padding: 0;
+
+  background:
+    radial-gradient(
+      circle at 50% -20%,
+      rgba(189, 114, 232, 0.10),
+      transparent 45%
+    ),
+    var(--pt-bg);
+
+  color: var(--pt-text);
+}
+
+.playtime-tracker {
+  position: relative;
+
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+
+.playtime-tracker__hero {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  min-height: 116px;
+
+  padding: 22px 24px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      120deg,
+      #17101d,
+      #24172c 55%,
+      #17101d
+    );
+
+  border-bottom:
+    1px solid
+    var(--pt-border);
+}
+
+.playtime-tracker__hero::after {
+  content: "";
+
+  position: absolute;
+
+  left: 24px;
+  right: 24px;
+  bottom: 0;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(189, 114, 232, 0.5),
+      transparent
+    );
+}
+
+.playtime-tracker__hero-orbit {
+  position: absolute;
+
+  border:
+    1px solid
+    rgba(189, 114, 232, 0.08);
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.orbit-one {
+  width: 180px;
+  height: 180px;
+
+  right: -60px;
+  top: -75px;
+}
+
+.orbit-two {
+  width: 120px;
+  height: 120px;
+
+  right: -20px;
+  top: -40px;
+
+  border-color:
+    rgba(189, 114, 232, 0.13);
+}
+
+.playtime-tracker__hero-symbol {
+  position: relative;
+
+  z-index: 2;
+
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 58px;
+
+  margin-right: 16px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(189, 114, 232, 0.20),
+      rgba(112, 65, 141, 0.16)
+    );
+
+  border:
+    1px solid
+    rgba(189, 114, 232, 0.28);
+
+  color:
+    var(--pt-purple-light);
+
+  font-size: 1.35rem;
+
+  box-shadow:
+    inset 0 0 20px
+      rgba(189, 114, 232, 0.08),
+    0 0 25px
+      rgba(189, 114, 232, 0.08);
+}
+
+.playtime-tracker__hero-text {
+  position: relative;
+
+  z-index: 2;
+}
+
+.playtime-tracker__eyebrow {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--pt-purple);
+
+  font-size: 0.58rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+}
+
+.playtime-tracker__hero h2 {
+  margin: 0;
+
+  color: var(--pt-text);
+
+  font-size: 1.3rem;
+
+  font-weight: 600;
+
+  letter-spacing: 0.02em;
+}
+
+.playtime-tracker__hero p {
+  margin: 5px 0 0;
+
+  color: var(--pt-muted);
+
+  font-size: 0.72rem;
+}
+
+/* ==========================================================================
+   STATS
+   ========================================================================== */
+
+.playtime-tracker__stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 8px;
+
+  padding:
+    14px 16px 8px;
+}
+
+.playtime-stat {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-width: 0;
+
+  padding: 10px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.012)
+    );
+
+  border:
+    1px solid
+    var(--pt-border);
+
+  border-radius: 10px;
+}
+
+.playtime-stat__icon {
+  width: 29px;
+  height: 29px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 29px;
+
+  border-radius: 8px;
+
+  background:
+    rgba(189, 114, 232, 0.10);
+
+  color:
+    var(--pt-purple-light);
+
+  font-size: 0.7rem;
+}
+
+.playtime-stat__icon.online {
+  color: #79e0a0;
+
+  background:
+    rgba(121, 224, 160, 0.08);
+}
+
+.playtime-stat__label {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: var(--pt-muted);
+
+  font-size: 0.55rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.playtime-stat strong {
+  display: block;
+
+  color: var(--pt-text);
+
+  font-size: 0.85rem;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   LEADER
+   ========================================================================== */
+
+.playtime-tracker__leader {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  margin:
+    8px 16px 13px;
+
+  padding:
+    12px 14px;
+
+  background:
+    linear-gradient(
+      100deg,
+      rgba(229, 185, 107, 0.09),
+      rgba(189, 114, 232, 0.05)
+    );
+
+  border:
+    1px solid
+    rgba(229, 185, 107, 0.15);
+
+  border-radius: 12px;
+
+  overflow: hidden;
+}
+
+.playtime-tracker__leader::after {
+  content: "";
+
+  position: absolute;
+
+  right: -30px;
+  top: -40px;
+
+  width: 100px;
+  height: 100px;
+
+  border-radius: 50%;
+
+  border:
+    1px solid
+    rgba(229, 185, 107, 0.08);
+}
+
+.playtime-tracker__leader-mark {
+  width: 29px;
+  height: 29px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 29px;
+
+  margin-right: 10px;
+
+  color: var(--pt-gold);
+
+  font-size: 0.72rem;
+}
+
+.playtime-tracker__leader-avatar {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  margin-right: 10px;
+}
+
+.playtime-tracker__leader-avatar img {
+  width: 38px;
+  height: 38px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border:
+    2px solid
+    rgba(229, 185, 107, 0.35);
+}
+
+.playtime-tracker__leader-info {
+  min-width: 0;
+
+  flex: 1;
+}
+
+.playtime-tracker__leader-info span {
+  display: block;
+
+  color: var(--pt-muted);
+
+  font-size: 0.54rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.playtime-tracker__leader-info strong {
+  display: block;
+
+  margin-top: 2px;
+
+  overflow: hidden;
+
+  color: var(--pt-text);
+
+  font-size: 0.78rem;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.playtime-tracker__leader-time {
+  position: relative;
+
+  z-index: 2;
+
+  color: var(--pt-gold);
+
+  font-family:
+    "Roboto Mono",
+    "Consolas",
+    monospace;
+
+  font-size: 0.72rem;
+
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   LIST HEADER
+   ========================================================================== */
+
+.playtime-tracker__list-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  padding:
+    4px 25px 7px;
+
+  color: var(--pt-muted);
+
+  font-size: 0.55rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   PLAYER LIST
+   ========================================================================== */
+
+.playtime-tracker__players {
+  padding:
+    0 16px 16px;
+}
+
+.playtime-player {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    35px
+    42px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  min-height: 59px;
+
+  padding:
+    8px 10px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  border:
+    1px solid
+    transparent;
+
+  border-radius: 10px;
+
+  transition:
+    background 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.playtime-player
++ .playtime-player {
+  margin-top: 4px;
+}
+
+.playtime-player:hover {
+  background:
+    rgba(189, 114, 232, 0.07);
+
+  border-color:
+    rgba(189, 114, 232, 0.12);
+
+  transform:
+    translateX(2px);
+}
+
+.playtime-player.is-top {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(189, 114, 232, 0.05),
+      rgba(255, 255, 255, 0.015)
+    );
+}
+
+.playtime-player.is-gm {
+  border-left:
+    2px solid
+    rgba(189, 114, 232, 0.35);
+}
+
+/* ==========================================================================
+   RANK
+   ========================================================================== */
+
+.playtime-player__rank {
+  text-align: center;
+}
+
+.playtime-rank__medal {
+  width: 25px;
+  height: 25px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  font-size: 0.68rem;
+
+  font-weight: 700;
+}
+
+.playtime-rank__medal.gold {
+  color: #f3d58c;
+
+  background:
+    rgba(229, 185, 107, 0.13);
+
+  border:
+    1px solid
+    rgba(229, 185, 107, 0.25);
+}
+
+.playtime-rank__medal.silver {
+  color: #d2d4dc;
+
+  background:
+    rgba(185, 189, 199, 0.10);
+
+  border:
+    1px solid
+    rgba(185, 189, 199, 0.18);
+}
+
+.playtime-rank__medal.bronze {
+  color: #dda27a;
+
+  background:
+    rgba(194, 140, 97, 0.10);
+
+  border:
+    1px solid
+    rgba(194, 140, 97, 0.18);
+}
+
+.playtime-rank__number {
+  color: #706778;
+
+  font-size: 0.67rem;
+
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   AVATAR
+   ========================================================================== */
+
+.playtime-player__avatar {
+  position: relative;
+
+  width: 38px;
+  height: 38px;
+}
+
+.playtime-player__avatar img {
+  width: 38px;
+  height: 38px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border:
+    2px solid
+    rgba(255, 255, 255, 0.08);
+
+  background: #0d0a10;
+}
+
+.playtime-player.is-top
+.playtime-player__avatar img {
+  border-color:
+    rgba(189, 114, 232, 0.28);
+}
+
+.playtime-player__status {
+  position: absolute;
+
+  right: -1px;
+  bottom: 0;
+
+  width: 9px;
+  height: 9px;
+
+  border-radius: 50%;
+
+  border:
+    2px solid
+    var(--pt-surface);
+}
+
+.playtime-player__status.is-online {
+  background: #79e0a0;
+
+  box-shadow:
+    0 0 6px
+    rgba(121, 224, 160, 0.6);
+}
+
+.playtime-player__status.is-offline {
+  background: #665c6b;
+}
+
+/* ==========================================================================
+   IDENTITY
+   ========================================================================== */
+
+.playtime-player__identity {
+  min-width: 0;
+
+  margin-left: 8px;
+}
+
+.playtime-player__name {
+  overflow: hidden;
+
+  color: var(--pt-text);
+
+  font-size: 0.78rem;
+
+  font-weight: 500;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.playtime-player__badges {
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  margin-top: 3px;
+}
+
+.playtime-player__gm {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 3px;
+
+  color:
+    var(--pt-purple-light);
+
+  font-size: 0.49rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.05em;
+}
+
+.playtime-player__online-label {
+  color: #665c6b;
+
+  font-size: 0.48rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.05em;
+}
+
+.playtime-player__online-label.is-online {
+  color: #79c995;
+}
+
+/* ==========================================================================
+   TIME
+   ========================================================================== */
+
+.playtime-player__time {
+  padding-left: 12px;
+
+  color:
+    var(--pt-purple-light);
+
+  font-family:
+    "Roboto Mono",
+    "Consolas",
+    monospace;
+
+  font-size: 0.68rem;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   EMPTY
+   ========================================================================== */
+
+.playtime-tracker__empty {
+  padding: 30px;
+
+  color: var(--pt-muted);
+
+  text-align: center;
+
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.playtime-tracker-window
+.dialog-buttons {
+  display: flex;
+
+  gap: 6px;
+
+  padding:
+    9px 12px;
+
+  background: #0d0a10;
+
+  border-top:
+    1px solid
+    var(--pt-border);
+}
+
+.playtime-tracker-window
+.dialog-buttons button {
+  min-height: 32px;
+
+  padding:
+    0 12px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.07);
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  color: var(--pt-muted);
+
+  font-size: 0.66rem;
+
+  font-weight: 600;
+
+  transition:
+    all 120ms ease;
+}
+
+.playtime-tracker-window
+.dialog-buttons button:hover {
+  background:
+    rgba(189, 114, 232, 0.12);
+
+  border-color:
+    rgba(189, 114, 232, 0.25);
+
+  color: var(--pt-text);
+}
+
+.playtime-tracker-window
+.dialog-buttons button[data-action="reset"] {
+  margin-right: auto;
+
+  color: #d58d9c;
+
+  border-color:
+    rgba(213, 141, 156, 0.12);
+}
+
+.playtime-tracker-window
+.dialog-buttons button[data-action="reset"]:hover {
+  background:
+    rgba(213, 141, 156, 0.10);
+
+  border-color:
+    rgba(213, 141, 156, 0.25);
+
+  color: #efabb9;
+}
+
+/* ==========================================================================
+   RESET CONFIRMATION
+   ========================================================================== */
+
+.playtime-reset-confirmation {
+  padding:
+    12px 4px 5px;
+
+  text-align: center;
+}
+
+.playtime-reset-confirmation__icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin:
+    0 auto 12px;
+
+  border-radius: 14px;
+
+  color: #e4a0af;
+
+  background:
+    rgba(213, 141, 156, 0.09);
+
+  border:
+    1px solid
+    rgba(213, 141, 156, 0.18);
+
+  font-size: 1.1rem;
+}
+
+.playtime-reset-confirmation h3 {
+  margin:
+    0 0 8px;
+
+  color: var(--pt-text);
+
+  font-size: 0.95rem;
+}
+
+.playtime-reset-confirmation p {
+  margin: 0;
+
+  color: var(--pt-muted);
+
+  font-size: 0.72rem;
+
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 500px) {
+
+  .playtime-tracker__stats {
+    grid-template-columns:
+      1fr;
+  }
+
+  .playtime-player {
+    grid-template-columns:
+      30px
+      42px
+      minmax(0, 1fr)
+      auto;
+  }
+
+  .playtime-player__online-label {
+    display: none;
+  }
+
+}
