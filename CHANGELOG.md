@@ -1,4 +1,4 @@
-## [1.0.0] - 2026-08-20
+## [1.1] - 2026-08-20
 
 ### Added
 - Updated the module to Foundry version 14.367
