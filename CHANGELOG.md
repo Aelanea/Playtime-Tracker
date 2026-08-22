@@ -1,7 +1,7 @@
 ## [1.2] - 2026-08-22
 
 ### Added
-- Fixed time counting as it was counting from the moment an user logged for the first time, since the module was enabled, now it properly counts only when the player or gm its inside the world and nothing else.
+- Fixed time counting as it was counting from the moment an user logged for the first time, since the module was enabled, now it properly counts only when the player or gm its inside the world and nothing else,  **a reset its recommended.**.
 
 ### Known Issues
 None
