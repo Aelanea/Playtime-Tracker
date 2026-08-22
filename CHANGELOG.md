@@ -1,3 +1,11 @@
+## [1.2] - 2026-08-22
+
+### Added
+- Fixed time counting as it was counting from the moment an user logged for the first time, since the module was enabled, now it properly counts only when the player or gm its inside the world and nothing else.
+
+### Known Issues
+None
+
 ## [1.1] - 2026-08-20
 
 ### Added
