@@ -1,5 +1,6 @@
 const MODULE_ID = "playtime-tracker";
 const SETTINGS_KEY = "playtimes";
+
 const COMMANDS = ["played", "playtime"];
 
 let updateTimer = null;
@@ -10,16 +11,12 @@ let trackerDialog = null;
    ========================================================================== */
 
 function isPrimaryGM() {
-  return game.user?.isGM && game.users.activeGM?.id === game.user.id;
+  return game.user?.isGM &&
+    game.users.activeGM?.id === game.user.id;
 }
 
 function localize(key, fallback = key) {
   const translated = game.i18n.localize(key);
-
-  /*
-   * Foundry returns the key itself when the translation does not exist.
-   * Prevent that raw key from ever being displayed.
-   */
   return translated === key ? fallback : translated;
 }
 
@@ -46,6 +43,7 @@ function getEntry(playtimes, userId) {
 
   return playtimes[userId];
 }
+
 
 function getCurrentPlaytime(
   user,
@@ -143,7 +141,9 @@ Hooks.once("ready", async () => {
     return;
   }
 
-  await initializeActiveUsers();
+
+  await recoverStaleSessions();
+
 
   updateTimer = window.setInterval(
     checkpointActiveUsers,
@@ -191,7 +191,7 @@ function registerChatCommands() {
 }
 
 /* ==========================================================================
-   CONNECTION TRACKING
+   REAL CONNECTION TRACKING
    ========================================================================== */
 
 Hooks.on(
@@ -207,75 +207,83 @@ Hooks.on(
       user.id
     );
 
+    /*
+     * PLAYER CONNECTED
+     */
     if (connected) {
-      if (!entry.startTime) {
-        entry.startTime = Date.now();
 
-        await savePlaytimes(
-          playtimes
-        );
-      }
+      /*
+       * A connection event is the authoritative moment
+       * at which we begin counting.
+       *
+       * Never preserve an old startTime here.
+       */
+      entry.startTime = Date.now();
+
+      await savePlaytimes(
+        playtimes
+      );
+
+      console.log(
+        `${MODULE_ID} | Started session for ${user.name}.`
+      );
 
       return;
     }
 
+    /*
+     * PLAYER DISCONNECTED
+     */
     if (entry.startTime) {
       const now = Date.now();
 
-      entry.total += Math.max(
-        0,
-        now - entry.startTime
-      );
+      const sessionTime =
+        Math.max(
+          0,
+          now - entry.startTime
+        );
+
+      entry.total += sessionTime;
 
       entry.startTime = null;
 
       await savePlaytimes(
         playtimes
       );
+
+      console.log(
+        `${MODULE_ID} | Ended session for ${user.name}: ${formatDuration(sessionTime)}.`
+      );
     }
   }
 );
 
 /* ==========================================================================
-   INITIALIZE ACTIVE USERS
+   STALE SESSION RECOVERY
    ========================================================================== */
 
-async function initializeActiveUsers() {
+
+async function recoverStaleSessions() {
   if (!isPrimaryGM()) {
     return;
   }
 
   const playtimes = getPlaytimes();
-  const now = Date.now();
 
   let changed = false;
 
   for (const user of game.users.contents) {
-    const entry = getEntry(
-      playtimes,
-      user.id
-    );
+    const entry =
+      playtimes[user.id];
 
-    if (
-      user.active &&
-      !entry.startTime
-    ) {
-      entry.startTime = now;
-      changed = true;
+    if (!entry?.startTime) {
+      continue;
     }
 
-    if (
-      !user.active &&
-      entry.startTime
-    ) {
-      entry.total += Math.max(
-        0,
-        now - entry.startTime
-      );
 
-      entry.startTime = null;
-      changed = true;
-    }
+    entry.startTime = null;
+
+    changed = true;
   }
 
   if (changed) {
@@ -283,10 +291,12 @@ async function initializeActiveUsers() {
       playtimes
     );
   }
+
+
 }
 
 /* ==========================================================================
-   CHECKPOINT
+   PERIODIC CHECKPOINT
    ========================================================================== */
 
 async function checkpointActiveUsers() {
@@ -303,6 +313,9 @@ async function checkpointActiveUsers() {
     const entry =
       playtimes[user.id];
 
+    /*
+     * No active session = nothing to count.
+     */
     if (
       !user.active ||
       !entry?.startTime
@@ -310,15 +323,19 @@ async function checkpointActiveUsers() {
       continue;
     }
 
-    const elapsed = Math.max(
-      0,
-      now - entry.startTime
-    );
+    const elapsed =
+      Math.max(
+        0,
+        now - entry.startTime
+      );
 
     if (elapsed <= 0) {
       continue;
     }
 
+    /*
+     * Move the checkpoint forward.
+     */
     entry.total += elapsed;
     entry.startTime = now;
 
@@ -373,15 +390,6 @@ async function resetPlaytimes() {
     return false;
   }
 
-  /*
-   * Use literal button labels here.
-   *
-   * This prevents Foundry from displaying:
-   * PLAYTIME-TRACKER.confirmReset
-   * PLAYTIME-TRACKER.cancel
-   *
-   * if the language file has not been loaded/reloaded yet.
-   */
   const confirmed =
     await DialogV2.confirm({
       window: {
@@ -419,7 +427,7 @@ async function resetPlaytimes() {
             ${escapeHTML(
               localize(
                 "PLAYTIME-TRACKER.resetWarning",
-                "This will permanently reset every user's accumulated playtime to zero. Players currently online will begin counting again from the moment of the reset."
+                "This will permanently reset every user's accumulated playtime to zero."
               )
             )}
           </p>
@@ -427,10 +435,6 @@ async function resetPlaytimes() {
         </div>
       `,
 
-      /*
-       * Explicit English labels.
-       * These are intentionally NOT localized.
-       */
       yes: {
         action: "yes",
         label: "Confirm Reset",
@@ -451,24 +455,14 @@ async function resetPlaytimes() {
     return false;
   }
 
-  /*
-   * Create completely fresh playtime data.
-   */
   const now = Date.now();
   const playtimes = {};
+
 
   for (const user of game.users.contents) {
     playtimes[user.id] = {
       total: 0,
-
-      /*
-       * Online users immediately begin a
-       * brand-new session.
-       */
-      startTime:
-        user.active
-          ? now
-          : null
+      startTime: null
     };
   }
 
@@ -488,9 +482,6 @@ async function resetPlaytimes() {
     )
   );
 
-  /*
-   * Update the tracker immediately.
-   */
   if (
     trackerDialog &&
     trackerDialog.rendered
@@ -533,9 +524,6 @@ async function openTracker() {
 
   const buttons = [];
 
-  /*
-   * RESET
-   */
   if (isPrimaryGM()) {
     buttons.push({
       action: "reset",
@@ -551,9 +539,6 @@ async function openTracker() {
     });
   }
 
-  /*
-   * REFRESH
-   */
   buttons.push({
     action: "refresh",
 
@@ -567,9 +552,6 @@ async function openTracker() {
     }
   });
 
-  /*
-   * CLOSE
-   */
   buttons.push({
     action: "close",
 
@@ -615,7 +597,7 @@ async function openTracker() {
 }
 
 /* ==========================================================================
-   TRACKER CONTENT
+   CONTENT
    ========================================================================== */
 
 function buildTrackerContent() {
@@ -656,7 +638,8 @@ function buildTrackerContent() {
   const activeUsers =
     users.filter(
       entry =>
-        entry.user.active
+        entry.user.active &&
+        playtimes[entry.user.id]?.startTime
     ).length;
 
   const longestSession =
@@ -1169,23 +1152,17 @@ function formatDuration(
   const parts = [];
 
   if (days > 0) {
-    parts.push(
-      `${days}d`
-    );
+    parts.push(`${days}d`);
   }
 
   if (
     hours > 0 ||
     days > 0
   ) {
-    parts.push(
-      `${hours}h`
-    );
+    parts.push(`${hours}h`);
   }
 
-  parts.push(
-    `${minutes}m`
-  );
+  parts.push(`${minutes}m`);
 
   return parts.join(" ");
 }
@@ -1220,26 +1197,11 @@ function escapeHTML(value) {
   return String(
     value ?? ""
   )
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 /* ==========================================================================
