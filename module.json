@@ -3,15 +3,16 @@
   "title": "Playtime Tracker",
   "description": "Tracks total connected time for each player and GM.",
   "license": "MIT",
-  "version": "1.1",
+  "version": "1.2",
   "url": "https://github.com/Aelanea/Playtime-Tracker/tree/main",
   "readme": "https://github.com/Aelanea/Playtime-Tracker/blob/main/README.md",
-  "manifest": "https://github.com/Aelanea/Playtime-Tracker/releases/download/1.1/module.json",
-  "download": "https://github.com/Aelanea/Playtime-Tracker/releases/download/1.1/module.zip",
+  "manifest": "https://github.com/Aelanea/Playtime-Tracker/releases/download/1.2/module.json",
+  "download": "https://github.com/Aelanea/Playtime-Tracker/releases/download/1.2/module.zip",
   "changelog": "https://github.com/Aelanea/Playtime-Tracker/blob/main/CHANGELOG.md",
   "compatibility": {
     "minimum": "14",
-    "verified": "14.367"
+    "verified": "14.367",
+    "maximum": "14.367"
   },
   "authors": [
     {
@@ -24,13 +25,17 @@
     "scripts/playtime-tracker.js"
   ],
   "styles": [
-    "styles/playtime-tracker.css"
+    {
+      "src": "styles/playtime-tracker.css"
+    }
   ],
   "languages": [
     {
       "lang": "en",
       "name": "English",
-      "path": "lang/en.json"
+      "path": "lang/en.json",
+      "flags": {}
     }
-  ]
+  ],
+  "flags": {}
 }
