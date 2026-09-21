@@ -1,3 +1,11 @@
+## [1.3] - 2026-09-21
+
+### Fixed
+- Minor update to fix compatibility with foundry update 368, it should now be compatible for all 14 versions
+
+### Known Issues
+- None
+
 ## [1.2] - 2026-08-22
 
 ### Added
